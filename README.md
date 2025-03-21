@@ -5,6 +5,10 @@
 ### Description
 Registers a new user into the system. Validates required fields and creates a user. On a successful registration, returns a token and the user object.
 
+### HTTP Method
+
+`POST`
+
 ### Request Body Requirements
 - **fullname**: An object containing:
   - **firstname** (string, required, minimum 3 characters)
@@ -46,6 +50,56 @@ Registers a new user into the system. Validates required fields and creates a us
   "errors": [
     { "msg": "Invalid email", "param": "email", "location": "body" },
     ...
+  ]
+}
+```
+
+## POST /users/login
+
+### Description
+Authenticates a user by validating credentials. On success, returns a token and user data.
+
+### HTTP Method
+`POST`
+
+### Request Body Requirements
+- **email**: A valid email string, required.
+- **password**: A string, required, minimum 6 characters.
+
+### Status Codes
+- **200 OK**: Authentication successful, returns token and user data.
+- **400 Bad Request**: Validation errors due to missing or invalid fields.
+- **401 Unauthorized**: Incorrect email or password.
+
+### Example Request
+```json
+{
+  "email": "john.doe@example.com",
+  "password": "yourpassword"
+}
+```
+
+### Example Success Response (200)
+```json
+{
+  "token": "jwt_token_here",
+  "user": {
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Doe"
+    },
+    "email": "john.doe@example.com",
+    "password": "hashed_password_here"
+  }
+}
+```
+
+### Example Error Response (400 or 401)
+```json
+{
+  "errors": [
+    { "msg": "Invalid email", "param": "email", "location": "body" }
+    // ...other errors...
   ]
 }
 ```
