@@ -103,3 +103,52 @@ Authenticates a user by validating credentials. On success, returns a token and 
   ]
 }
 ```
+
+## GET /users/profile
+
+### Description
+Retrieves the authenticated user's profile. Requires valid authentication token.
+
+### HTTP Method
+`GET`
+
+### Authentication
+- Requires a valid token in cookies or authorization header.
+
+### Status Codes
+- **200 OK**: Returns user profile information.
+- **401 Unauthorized**: No token provided or token is invalid/expired.
+
+### Example Success Response (200)
+```json
+{
+  "fullname": {
+    "firstname": "John",
+    "lastname": "Doe"
+  },
+  "email": "john.doe@example.com"
+  // ...other user fields...
+}
+```
+
+## GET /users/logout
+
+### Description
+Logs out the user by clearing the token cookie and blacklisting the token.
+
+### HTTP Method
+`GET`
+
+### Authentication
+- Requires a valid token in cookies or authorization header.
+
+### Status Codes
+- **200 OK**: Logout successful.
+- **401 Unauthorized**: No valid token provided.
+
+### Example Success Response (200)
+```json
+{
+  "message": "Logged out"
+}
+```
