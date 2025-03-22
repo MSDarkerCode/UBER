@@ -152,3 +152,73 @@ Logs out the user by clearing the token cookie and blacklisting the token.
   "message": "Logged out"
 }
 ```
+
+## POST /captains/register
+
+### Description
+Registers a new captain. Validates required fields including vehicle details and creates a captain. Returns the created captain details on success.
+
+### HTTP Method
+`POST`
+
+### Request Body Requirements
+- **fullname**: An object containing:
+  - **firstname** (string, required, minimum 3 characters)
+  - **lastname** (string, optional)
+- **email**: A valid email string, required.
+- **password**: A string, required, minimum 6 characters.
+- **vehicle**: An object containing:
+  - **color** (string, required, minimum 3 characters)
+  - **plate** (string, required, minimum 3 characters)
+  - **capacity** (string, required, minimum 1 character)
+  - **vehicleType** (string, required, must be one of ['car', 'motorcycle', 'auto']).
+
+### Status Codes
+- **201 Created**: Captain registered successfully.
+- **400 Bad Request**: Validation errors due to missing or invalid fields.
+
+### Example Request
+```json
+{
+  "fullname": { "firstname": "Alice", "lastname": "Smith" },
+  "email": "alice.smith@example.com",
+  "password": "captainpassword",
+  "vehicle": {
+    "color": "Blue",
+    "plate": "XYZ123",
+    "capacity": "4",
+    "vehicleType": "car"
+  }
+}
+```
+
+### Example Success Response (201)
+```json
+{
+  "token": "jwt_token_here",
+  "captain": {
+    "fullname": {
+      "firstname": "Alice",
+      "lastname": "Smith"
+    },
+    "email": "alice.smith@example.com",
+    "password": "hashed_password_here",
+    "vehicle": {
+      "color": "Blue",
+      "plate": "XYZ123",
+      "capacity": "4",
+      "vehicleType": "car"
+    }
+  }
+}
+```
+
+### Example Error Response (400)
+```json
+{
+  "errors": [
+    { "msg": "Invalid email", "param": "email", "location": "body" }
+    // ...other errors...
+  ]
+}
+```
